@@ -1,0 +1,54 @@
+package com.keerthi.ChallengeApp;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+public class ChallengeService {
+    private List<Challenge> challenges=
+            new ArrayList<>();
+    private Long nextId=1L;
+
+    public ChallengeService(){
+
+    }
+
+    public List<Challenge> getAllChallenge(){
+        return challenges;
+    }
+
+    public boolean addChallenge(@RequestBody Challenge challenge){
+        if(challenge!=null) {
+            challenge.setId(nextId++);
+            challenges.add(challenge);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public Challenge getChallenge(String month) {
+        for(Challenge challenge: challenges){
+            if(challenge.getMonth().equalsIgnoreCase(month)){
+                return challenge;
+            }
+        }
+        return null;
+    }
+
+    public boolean updatChallenge(Long id, Challenge updatedChallenge) {
+        for(Challenge challenge: challenges){
+            if(Objects.equals(challenge.getId(), id)){
+                challenge.setMonth(updatedChallenge.getMonth());
+                challenge.setDescription(updatedChallenge.getDescription());
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
